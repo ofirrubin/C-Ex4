@@ -64,7 +64,7 @@ Edge* getEdge(Graph* g, int src, int dest){
 
 boolean addEdge(Graph* g, int src, int dest, double weight){
     Graph* p = g;
-    if (getNode(g, dest) == NULL) return False; // Dest node not found.
+    //if (getNode(g, dest) == NULL) return False; // Dest node not found. -----> Removed since the program requires add edges withotu nodes...
     while(p != NULL){
         if (p -> v != NULL && p -> v -> id_ == src){
             addEdgeFrom(p ->v, dest, weight);
@@ -105,9 +105,12 @@ void addNodeFrom(Graph* g, Node* n){ // Adds node from existing node object
 }
 
 
-void addNode(Graph* g, int nodeID, int weight){
-    if (getNode(g, nodeID) == NULL)
-        addNodeFrom(g, createNode(nodeID, weight));
+Node* addNode(Graph* g, int nodeID, int weight){
+    Node* n = getNode(g, nodeID);
+    if (n != NULL) return n;
+    n = createNode(nodeID, weight);
+    addNodeFrom(g, n);
+    return n;
 }
 
 boolean removeEdge(Node* src, int dest){

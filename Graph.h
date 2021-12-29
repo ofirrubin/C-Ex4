@@ -27,7 +27,7 @@ Graph* createGraph(void);
 void freeGraph(Graph* g);
 
 Node* createNode(int id, double weight);
-void addNode(Graph* g, int id_, int weight);
+Node* addNode(Graph* g, int id_, int weight);
 void addNodeFrom(Graph* g, Node* n);
 void removeNode(Graph* g, int n);
 Node* getNode(Graph*, int id_);

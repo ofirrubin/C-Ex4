@@ -8,6 +8,8 @@
 #include "GraphAlgo.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include <ctype.h>
 
 #include "Graph.h"
 
@@ -55,25 +57,90 @@ int test(void){
     return 0;
 }
 
+double getNum(char *lastChar){
+    char* chrs = calloc(1, sizeof(double) + 1); // At the maximum, each will represent a (double) number
+    int ptr = 0;
+    if (isdigit(*lastChar))
+        chrs[ptr] = (*lastChar);
+    else
+        ptr --;
+    do{
+        chrs[++ptr] = getchar();
+    }
+    while (ptr < sizeof(double) && (isdigit(chrs[ptr]) || chrs[ptr] == '.'));
+    *lastChar = chrs[ptr];
+    chrs[ptr] = 0;
+    double n = atof(chrs);
+    n = truncf(n * 1000.0) / 1000.0; // Ignoring everything after the 3th of the dot.
+    free(chrs);
+    return n;
+}
+
+char edgesInput(Node* n, char c){
+    return '\0';
+}
 
 int main() {
+    Graph* g = NULL;
     char command = getchar();
-    while (command == 'A' || command == 'B' || command == 'C' || command == 'T'){ // T is internal test
+    char c;
+    while (command == 'A' || command == 'B' || command == 'C' || command == 'D' || command == 'T'){ // T is internal test
+        c = getchar(); // Skip the current char (suppose to be space)
         if (command == 'A'){
+            double nodeID = getNum(&c);
+            if (g != NULL)
+                freeGraph(g);
+            g = createGraph();
+            addNode(g, nodeID, 0);
+            do{
+                c = getchar();
+                double dest = getNum(&c);
+                double weight = getNum(&c);
+                addEdge(g, nodeID, dest, weight);
+            }while(c == ' ');
+            printGraph(g);
+            printf("\n");
         }
         else if (command == 'B'){
+            double id_ = getNum(&c);
+            if(g == NULL)
+                g = createGraph();
+            Node* n = getNode(g, id_);
+            if (n != NULL)
+                removeNodeEdges(n); // Clear node edges if not exists
+            else
+                n = addNode(g, id_, 0); // Create node if not exists
             
+            c = getchar();
+            while (isdigit(c) || c == ' '){ // Otherwise we finished and c is the next command.
+                double dest = getNum(&c);
+                double weight = getNum(&c);
+                addEdgeFrom(n, dest, weight); // We already have the node pointer so we can add it directly.
+            }
+            printGraph(g);
         }
         else if (command == 'C'){
             
+            c = getchar();
+        }
+        else if (command == 'D')
+        {
+            double id_ = getNum(&c);
+            removeNode(g, id_);
+            // printf("removed node %f\n", id_);
+            //c = getchar();
         }
         else if (command == 'T'){
             test();
+            c = getchar();
         }
         else
             return 0;
-        
-        command = getchar();
+        while (c == ' ' || c == '\n')
+            c = getchar();
+        command = c; //getchar();
     }
+    if (g != NULL)
+        freeGraph(g);
     return 0;
 }
