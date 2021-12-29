@@ -13,7 +13,7 @@
 
 
 void printShortestPath(Graph* g, int src, int dest);
-int getShortestPathDist(Graph* g, int src, int dest);
+double getShortestPathDist(Graph* g, int src, int dest);
 Node* shortestPath(Graph* g, int src, int dest);
 double tsp_from(Graph* g, Node* nodes, int start_at);
 double tsp(Graph* g, Node* nodes);

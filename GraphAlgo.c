@@ -104,6 +104,7 @@ Node* getMinimum(Node* q, Node* visited){
 }
 
 Node* shortestPathBuilder(Graph* g, int src, int dest){
+    if (getNode(g, src) == NULL || getNode(g, dest) == NULL) return NULL;
     Node* visitedList = createNode(src, 0); // List of nodes visited, contains list of updated weight
     Node* q = createNode(src, 0);
     Node* parents = NULL; // parents: like dict where id=nodeID, weight=cameFromID, next is the next node in list.
@@ -194,7 +195,7 @@ Node* shortestPath(Graph* g, int src, int dest){
     return n;
 }
 
-int getShortestPathDist(Graph* g, int src, int dest){
+double getShortestPathDist(Graph* g, int src, int dest){
     Node* head = shortestPath(g, src, dest);
     if (head == NULL) return -1;
     double weight = 0;

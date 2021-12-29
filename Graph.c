@@ -141,6 +141,7 @@ void removeNodeEdges(Node* src){
         free(current); // Clear this edge
         current = next; // Set this pointer to the next edge pointer if any.
     }
+    src -> next = NULL; // Since the next is freed it would've been pointing to trash.
 }
 
 void removeNode(Graph* g, int n){ // removes node with id=n

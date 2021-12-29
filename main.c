@@ -84,7 +84,7 @@ int main() {
     Graph* g = NULL;
     char command = getchar();
     char c;
-    while (command == 'A' || command == 'B' || command == 'C' || command == 'D' || command == 'T'){ // T is internal test
+    while (command == 'A' || command == 'B' || command == 'S' || command == 'D' || command == 'T'){ // T is internal test
         c = getchar(); // Skip the current char (suppose to be space)
         if (command == 'A'){
             double nodeID = getNum(&c);
@@ -95,6 +95,8 @@ int main() {
             do{
                 c = getchar();
                 double dest = getNum(&c);
+                // ADD NODE IF NOT EXISTING
+                addNode(g, dest, 0);
                 double weight = getNum(&c);
                 addEdge(g, nodeID, dest, weight);
             }while(c == ' ');
@@ -114,13 +116,17 @@ int main() {
             c = getchar();
             while (isdigit(c) || c == ' '){ // Otherwise we finished and c is the next command.
                 double dest = getNum(&c);
+                // Add node if not exists...       TO VERIFY IF REQUIRED OR WHAT TO DO IN THIS CASE
+                addNode(g, dest, 0);
                 double weight = getNum(&c);
                 addEdgeFrom(n, dest, weight); // We already have the node pointer so we can add it directly.
             }
             printGraph(g);
         }
-        else if (command == 'C'){
-            
+        else if (command == 'S'){
+            double src = getNum(&c);
+            double dest = getNum(&c);
+            printf("%.2f\n", getShortestPathDist(g, src, dest));
             c = getchar();
         }
         else if (command == 'D')
