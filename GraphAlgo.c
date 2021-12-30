@@ -257,7 +257,7 @@ double shortestDistOf2(Graph* g, Node* n1, Node* n2, Node* lastNode){
     return b + pathB2last;
 }
 
-double _tsp(Graph* g, Node* nodes, Node* lastNode, Node* head){ // IMPLEMENT PURE PATH SHORTEST PATH DISTANCE
+double _tsp(Graph* g, Node* nodes, Node* lastNode, Node* head){
     if (nodes == NULL) return -1;
     else if (nodes -> next == NULL) return 0;
     if (nodes -> next -> next == NULL){ // 2 nodes only left to be compared
@@ -289,9 +289,6 @@ double _tsp(Graph* g, Node* nodes, Node* lastNode, Node* head){ // IMPLEMENT PUR
 double tsp(Graph* g, Node* nodes){
     if (nodes == NULL) return -1;
     if(nodes -> next == NULL) return -1;
-    if (nodes -> next -> next == NULL){
-        
-    }
     return _tsp(g, nodes, NULL, nodes);
 }
 
