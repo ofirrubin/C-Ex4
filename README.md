@@ -1,6 +1,8 @@
 # C-Ex4
 Software Systems A - Ex4 (C)
 
+# Graphs in C
+
 How to run:
 Compile using `make all`
 Then run the program with `./main`
