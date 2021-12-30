@@ -99,7 +99,7 @@ int main() {
                 while(c == ' ')
                 {
                     c = getchar();
-                    if (c == 'n') continue;
+                    if (! isdigit(c)) continue;
                     double dest = getNum(&c);
                     addNode(g, dest, 0);
                     double weight = getNum(&c);
