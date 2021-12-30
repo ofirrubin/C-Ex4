@@ -101,7 +101,7 @@ int main() {
                 num --;
             }
             int t = tsp(g, tspList); // You could also save and print as double
-            printf("TSP shortest path: %d\n ", t);
+            printf("TSP shortest path: %d \n", t);
             removeNodeEdges(tspList);
             free(tspList);
         }
