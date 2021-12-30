@@ -84,7 +84,7 @@ int main() {
             double src = getNum(&c);
             double dest = getNum(&c);
             int d = getShortestPathDist(g, src, dest); // You can also save double and output double
-            printf("Dijsktra shortest path: %d\n", d);
+            printf("Dijsktra shortest path: %d \n", d);
         }
         else if (command == 'D')
         {
@@ -101,7 +101,7 @@ int main() {
                 num --;
             }
             int t = tsp(g, tspList); // You could also save and print as double
-            printf("TSP shortest path: %d\n", t);
+            printf("TSP shortest path: %d\n ", t);
             removeNodeEdges(tspList);
             free(tspList);
         }
