@@ -217,11 +217,11 @@ double getShortestPathDist(Graph* g, int src, int dest){
 double pathWeight(Graph* g, Node* head){ // Returns the path of a path except the last two elements
     if (head == NULL) return -1;
     if (head -> next == NULL) return -1; // No node to go for.
-    //if (nodes -> next -> next -> next == NULL) return 0; // It has to calculate the last two elements only but it will be done in _tsp
+    if (head -> next -> next== NULL) return 0; // thisNode -> OtherNode -> NULL : 2 elements - calculated outside.
     double weight = 0;
     double tmp;
     Node* ptr = head;
-    while (ptr -> next -> next != NULL){ // untile: node -> node -> NULL
+    while (ptr -> next -> next -> next != NULL){ // untile: thisNode -> SomeNode -> SomeNode2 -> NULL
         tmp = getShortestPathDist(g, ptr -> id_, ptr -> next -> id_);
         if (tmp == -1) return -1;
         weight += tmp;
@@ -235,6 +235,10 @@ double shortestDistOf2(Graph* g, Node* n1, Node* n2, Node* lastNode){
     if (lastNode != NULL){
         pathA2last = getShortestPathDist(g, lastNode -> id_, n1 -> id_);
         pathB2last = getShortestPathDist(g, lastNode -> id_, n2 -> id_);
+    }
+    else{ // Consider the last node distance to 0 (because there is nothing before)
+        pathA2last = 0;
+        pathB2last = 0;
     }
     if (pathA2last != -1)
         a = getShortestPathDist(g, n1 -> id_, n2 -> id_);
@@ -253,19 +257,23 @@ double shortestDistOf2(Graph* g, Node* n1, Node* n2, Node* lastNode){
     return b + pathB2last;
 }
 
-double _tsp(Graph* g, Node* nodes, Node* lastNode, Node* head, int  start_at){ // IMPLEMENT PURE PATH SHORTEST PATH DISTANCE
+double _tsp(Graph* g, Node* nodes, Node* lastNode, Node* head){ // IMPLEMENT PURE PATH SHORTEST PATH DISTANCE
     if (nodes == NULL) return -1;
     else if (nodes -> next == NULL) return 0;
-    if (head -> id_ != start_at) return -1; // The path must begin with start_at
-    if (nodes -> next -> next == NULL) // 2 nodes only left to be compared
-       return shortestDistOf2(g, nodes, nodes -> next, lastNode);
+    if (nodes -> next -> next == NULL){ // 2 nodes only left to be compared
+        double pW = pathWeight(g, head);
+        if (pW == -1) return -1; // No path tile the last two elements.
+        double lastW = shortestDistOf2(g, nodes, nodes -> next, lastNode);
+        if (lastW == -1) return -1; // Last two elements doesn't have a path between them / last element.
+        return pW + lastW;
+    }
     double w = -1;
     int start_id = nodes -> id_;
     Node* ptr = nodes;
     while(ptr != NULL){
         nodes -> id_ = ptr -> id_;
         ptr -> id_ = start_id;
-        double o = _tsp(g, nodes -> next, nodes, head, start_at);
+        double o = _tsp(g, nodes -> next, nodes, head);
         if (w == -1 || (o != -1 && o < w))
             w = o;
         
@@ -278,17 +286,13 @@ double _tsp(Graph* g, Node* nodes, Node* lastNode, Node* head, int  start_at){ /
 }
 
 
-double tsp_from(Graph* g, Node* nodes, int start_at){
-    // Now we can make sure that the node actually starts at certain point
-    // For no start limit it would've been: since nodes is the list of nodes that can be changed,
-    //return _tsp(g, nodes, NULL, nodes);
-    //swap_start_at(nodes, start_at); // Make start_at the first element in the list
-    return _tsp(g, nodes -> next, nodes, nodes, start_at);
-}
-
 double tsp(Graph* g, Node* nodes){
     if (nodes == NULL) return -1;
-    return _tsp(g, nodes, NULL, nodes, nodes -> id_);
+    if(nodes -> next == NULL) return -1;
+    if (nodes -> next -> next == NULL){
+        
+    }
+    return _tsp(g, nodes, NULL, nodes);
 }
 
 

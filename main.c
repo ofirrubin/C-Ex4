@@ -32,10 +32,6 @@ double getNum(char *lastChar){
     return n;
 }
 
-char edgesInput(Node* n, char c){
-    return '\0';
-}
-
 int main() {
     Graph* g = NULL;
     char command = getchar();
@@ -46,7 +42,8 @@ int main() {
             if (g != NULL)
                 freeGraph(g);
             g = createGraph();
-            do{
+            int inputs = getNum(&c); // How many elements to receive
+            while (inputs > 0){
                 while (c == ' ' || c == 'n') // Ignore empty spaces
                     c = getchar();
                 if (! isdigit(c)) break;
@@ -61,9 +58,8 @@ int main() {
                     double weight = getNum(&c);
                     addEdge(g, nodeID, dest, weight);
                 }
-            }while(c == 'n');
-            printGraph(g);
-            printf("\n");
+                inputs --;
+            }
         }
         else if (command == 'B'){
             double id_ = getNum(&c);
@@ -78,40 +74,40 @@ int main() {
             c = getchar();
             while (isdigit(c) || c == ' '){ // Otherwise we finished and c is the next command.
                 double dest = getNum(&c);
-                // Add node if not exists...       TO VERIFY IF REQUIRED OR WHAT TO DO IN THIS CASE
                 addNode(g, dest, 0);
                 double weight = getNum(&c);
                 addEdgeFrom(n, dest, weight); // We already have the node pointer so we can add it directly.
+                c = getchar();
             }
-            printGraph(g);
         }
         else if (command == 'S'){
             double src = getNum(&c);
             double dest = getNum(&c);
-            printf("%.2f\n", getShortestPathDist(g, src, dest));
-            c = getchar();
+            int d = getShortestPathDist(g, src, dest); // You can also save double and output double
+            printf("Dijsktra shortest path: %d\n", d);
         }
         else if (command == 'D')
         {
             double id_ = getNum(&c);
-            removeNode(g, id_);
-            // printf("removed node %f\n", id_);
-            //c = getchar();
+            if (g != NULL)
+                removeNode(g, id_);
         }
         else if (command == 'T'){
-            double src = getNum(&c);
-            Node* tspList = createNode(src, 0);
-            //getNum(&c);
-            while(c == ' '){
+            int num = getNum(&c);
+            num --;
+            Node* tspList = createNode(getNum(&c), 0);
+            while(num > 0){
                 addEdgeFrom(tspList, getNum(&c), 0);
+                num --;
             }
-            printf("%.2f\n", tsp_from(g, tspList, src));
+            int t = tsp(g, tspList); // You could also save and print as double
+            printf("TSP shortest path: %d\n", t);
             removeNodeEdges(tspList);
             free(tspList);
         }
         else
             return 0;
-        while (c == ' ' || c == '\n')
+        while (c == ' ')
             c = getchar();
         command = c; //getchar();
     }

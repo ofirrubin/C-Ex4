@@ -145,7 +145,7 @@ void removeNodeEdges(Node* src){
 }
 
 void removeNode(Graph* g, int n){ // removes node with id=n
-    if (g->next != NULL) return; // No node to remove
+    if (g->next == NULL) return; // No node to remove
     Node* node = g-> v;
     if (node->id_ == n){
         removeNodeEdges(node); // Remove all nodes edges.
@@ -173,6 +173,7 @@ void removeNode(Graph* g, int n){ // removes node with id=n
             this -> next = next -> next; // We skip this node in the node list
             free(this); // We free this node of the memory.
         }
+        next = next -> next;
     }
 }
 
