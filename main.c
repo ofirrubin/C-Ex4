@@ -13,50 +13,6 @@
 
 #include "Graph.h"
 
-int test(void){
-    Graph* g = createGraph();
-    addNode(g, 0, 1);
-    addNode(g, 1, 10);
-    addNode(g, 2, 5);
-    addNode(g, 3, 0);
-    addNode(g, 4, 9);
-    if (addEdge(g, 0, 2, 3) == True)
-        printf("Edge added from 0 to 2...\n");
-    addEdge(g, 0, 3, 10);
-    if (addEdge(g, 2, 3, 4) == True)
-        printf("Edge added from 2 to 3...\n");
-    
-    printf("\n");
-    
-    
-    Node* s = shortestPath(g, 0, 3);
-    Node* ptr = s;
-    while(ptr != NULL){
-        printf("%d ", ptr->id_);
-        ptr = ptr -> next;
-    }
-    removeNodeEdges(s);
-    free(s);
-    
-    double w = getShortestPathDist(g, 0, 3);
-    printf("%f\n\n", w);
-    printGraph(g);
-    printf("\n\n\n");
-    
-    
-    Node* tspList = createNode(0, 0);
-    //addEdgeFrom(tspList, 1, 0);
-    addEdgeFrom(tspList, 2, 0);
-    addEdgeFrom(tspList, 3, 0);
-    printf("%.2f\n", tsp_from(g, tspList, 0));
-    removeNodeEdges(tspList);
-    free(tspList);
-    
-    
-    freeGraph(g);
-    return 0;
-}
-
 double getNum(char *lastChar){
     char* chrs = calloc(1, sizeof(double) + 1); // At the maximum, each will represent a (double) number
     int ptr = 0;
@@ -84,7 +40,7 @@ int main() {
     Graph* g = NULL;
     char command = getchar();
     char c;
-    while (command == 'A' || command == 'B' || command == 'S' || command == 'D' || command == 'T' || command == 't'){ // t is internal test
+    while (command == 'A' || command == 'B' || command == 'S' || command == 'D' || command == 'T'){
         c = getchar(); // Skip the current char (suppose to be space)
         if (command == 'A'){
             if (g != NULL)
@@ -152,10 +108,6 @@ int main() {
             printf("%.2f\n", tsp_from(g, tspList, src));
             removeNodeEdges(tspList);
             free(tspList);
-        }
-        else if (command == 't'){
-            test();
-            c = getchar();
         }
         else
             return 0;
