@@ -113,6 +113,5 @@ int main() {
     }
     if (g != NULL)
         freeGraph(g);
-    printf("\n"); // JUST A RANDOM NEW LINE FOR THE TESTING
     return 0;
 }
