@@ -84,22 +84,28 @@ int main() {
     Graph* g = NULL;
     char command = getchar();
     char c;
-    while (command == 'A' || command == 'B' || command == 'S' || command == 'D' || command == 'T'){ // T is internal test
+    while (command == 'A' || command == 'B' || command == 'S' || command == 'D' || command == 'T' || command == 't'){ // t is internal test
         c = getchar(); // Skip the current char (suppose to be space)
         if (command == 'A'){
-            double nodeID = getNum(&c);
             if (g != NULL)
                 freeGraph(g);
             g = createGraph();
-            addNode(g, nodeID, 0);
             do{
-                c = getchar();
-                double dest = getNum(&c);
-                // ADD NODE IF NOT EXISTING
-                addNode(g, dest, 0);
-                double weight = getNum(&c);
-                addEdge(g, nodeID, dest, weight);
-            }while(c == ' ');
+                while (c == ' ' || c == 'n') // Ignore empty spaces
+                    c = getchar();
+                if (! isdigit(c)) break;
+                double nodeID = getNum(&c);
+                addNode(g, nodeID, 0);
+                while(c == ' ')
+                {
+                    c = getchar();
+                    if (c == 'n') continue;
+                    double dest = getNum(&c);
+                    addNode(g, dest, 0);
+                    double weight = getNum(&c);
+                    addEdge(g, nodeID, dest, weight);
+                }
+            }while(c == 'n');
             printGraph(g);
             printf("\n");
         }
@@ -137,6 +143,17 @@ int main() {
             //c = getchar();
         }
         else if (command == 'T'){
+            double src = getNum(&c);
+            Node* tspList = createNode(src, 0);
+            //getNum(&c);
+            while(c == ' '){
+                addEdgeFrom(tspList, getNum(&c), 0);
+            }
+            printf("%.2f\n", tsp_from(g, tspList, src));
+            removeNodeEdges(tspList);
+            free(tspList);
+        }
+        else if (command == 't'){
             test();
             c = getchar();
         }
