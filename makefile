@@ -11,4 +11,4 @@ main: main.c Graph.c Graph.h GraphAlgo.c GraphAlgo.h
 .PHONY: all clean
 
 clean: # Remove any file that might created.
-	rm -f *.o *.a *.so *.gch main
+	rm -f *.o *.a *.so *.gch graph
